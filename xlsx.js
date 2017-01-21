@@ -7484,6 +7484,9 @@ return function parse_ws_xml_data(sdata, s, opts, guess) {
 			if(guess.e.c < idx) guess.e.c = idx;
 			/* 18.18.11 t ST_CellType */
 			switch(p.t) {
+				case 'n':
+					if(!opts.bookNumLiterals) { p.v = parseFloat(p.v); }
+					break;
 				case 's':
 					sstr = strs[parseInt(p.v, 10)];
 					p.v = sstr.t;
@@ -11110,6 +11113,7 @@ var fix_read_opts = fix_opts_func([
 	['bookProps', false], /* only try to get properties (no Sheets) */
 	['bookFiles', false], /* include raw file structure (keys, files, cfb) */
 	['bookVBA', false], /* include vba raw data (vbaraw) */
+	['bookNumLiterals', false], /* keep numeric literals in .v as strings */
 
 	['password',''], /* password */
 	['WTF', false] /* WTF mode (throws errors) */
