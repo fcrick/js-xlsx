@@ -7245,7 +7245,7 @@ function safe_format(p, fmtid, fillid, opts) {
 			else p.w = SSF._general(p.v,_ssfopts);
 		}
 		else if(p.t === 'd') p.w = SSF.format(fmtid,datenum(p.v),_ssfopts);
-		else p.w = SSF.format(fmtid,p.v,_ssfopts);
+		else p.w = SSF.format(fmtid,p.t == 'n' ? parseFloat(p.v) : p.v,_ssfopts);
 		if(opts.cellNF) p.z = SSF._table[fmtid];
 	} catch(e) { if(opts.WTF) throw e; }
 	if(fillid) try {
@@ -7484,7 +7484,6 @@ return function parse_ws_xml_data(sdata, s, opts, guess) {
 			if(guess.e.c < idx) guess.e.c = idx;
 			/* 18.18.11 t ST_CellType */
 			switch(p.t) {
-				case 'n': p.v = parseFloat(p.v); break;
 				case 's':
 					sstr = strs[parseInt(p.v, 10)];
 					p.v = sstr.t;
