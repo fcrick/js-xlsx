@@ -1383,7 +1383,7 @@ var rencstr = "&<>'\"".split("");
 
 // TODO: CP remap (need to read file version to determine OS)
 var unescapexml = (function() {
-	var encregex = /&[a-z]*;/g, coderegex = /_x([\da-fA-F]+)_/g;
+	var encregex = /&[a-z]*;/g, coderegex = /_x([\da-fA-F]{4})_/g;
 	return function unescapexml(text) {
 		var s = text + '';
 		return s.replace(encregex, function($$) { return encodings[$$]; }).replace(coderegex,function(m,c) {return String.fromCharCode(parseInt(c,16));});
