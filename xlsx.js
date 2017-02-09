@@ -4322,6 +4322,7 @@ var parse_rs = (function parse_rs_factory() {
 
 /* 18.4.8 si CT_Rst */
 var sitregex = /<(?:\w+:)?t[^>]*>([^<]*)<\/(?:\w+:)?t>/g, sirregex = /<(?:\w+:)?r>/;
+var pregex = /<t[^>]*preserve[^>]*>/g;
 function parse_si(x, opts) {
 	var html = opts ? opts.cellHTML : true;
 	var z = {};
@@ -4336,7 +4337,10 @@ function parse_si(x, opts) {
 	/* 18.4.4 r CT_RElt (Rich Text Run) */
 	else if((y = x.match(sirregex))) {
 		z.r = x;
-		z.t = utf8read(unescapexml((x.match(sitregex)||[]).join("").replace(tagregex,"")));
+		z.t = x.match(sitregex).map(t => {
+			let p = t.match(pregex) ? x => x : x => x.trim();
+			return p(utf8read(unescapexml(t.replace(tagregex,""))));
+		}).join("");
 		if(html) z.h = parse_rs(x);
 	}
 	/* 18.4.3 phoneticPr CT_PhoneticPr (TODO: needed for Asian support) */
